@@ -1,0 +1,368 @@
+ <!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>የጤና ትምህርት - TikTok Edition</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --primary: #0ea5e9;
+      --accent: #22c55e;
+      --text: #f8fafc;
+      --subtext: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* TikTok Aspect Ratio Container (9:16) */
+    .tiktok-canvas {
+      width: 100%;
+      max-width: 405px;
+      height: 720px;
+      background: var(--bg-color);
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 20px;
+      color: var(--text);
+    }
+
+    /* Top Left Floating Animated Logo */
+    .animated-logo {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 55px;
+      height: auto;
+      z-index: 20;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+      animation: logoFloat 3s ease-in-out infinite alternate;
+    }
+
+    /* Header Styling */
+    .header {
+      text-align: center;
+      z-index: 10;
+      margin-top: 25px;
+    }
+
+    .badge {
+      background: rgba(14, 165, 233, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .main-title {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    /* Animation Display Area */
+    .visual-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin: 15px 0;
+    }
+
+    /* Animated Graphic Component */
+    .graphic-box {
+      width: 170px;
+      height: 170px;
+      background: var(--card-bg);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 0 25px rgba(14, 165, 233, 0.3);
+    }
+
+    .pulse-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      animation: pulse 2s infinite ease-out;
+    }
+
+    .icon-display {
+      font-size: 64px;
+      z-index: 2;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Content Card */
+    .info-card {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 18px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .info-text {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    /* Footnote Doctor Credentials */
+    .footnote-author {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--subtext);
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+      margin-bottom: 2px;
+      z-index: 10;
+    }
+
+    /* Controls & Progress Bar */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.1s linear;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn:active {
+      opacity: 0.8;
+    }
+
+    /* Keyframe Animations */
+    @keyframes logoFloat {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        transform: translateY(-6px) scale(1.05);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.3;
+      }
+      100% {
+        transform: scale(0.95);
+        opacity: 0.8;
+      }
+    }
+
+    .bounce {
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tiktok-canvas">
+    <img src="454.png" alt="Logo" class="animated-logo">
+
+    <div class="header">
+      <span class="badge" id="topic-badge">የዕለቱ የጤና መረጃ</span>
+      <h1 class="main-title" id="main-title">ለጤናማ ህይወት 3 አስፈላጊ ነጥቦች</h1>
+    </div>
+
+    <div class="visual-container">
+      <div class="graphic-box">
+        <div class="pulse-ring"></div>
+        <div class="icon-display" id="icon-display">💧</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <p class="info-text" id="info-text">በቀን ቢያንስ 2 ሊትር ውሃ መጠጣት ሰውነታችንን ያነቃል!</p>
+    </div>
+
+    <div class="footnote-author"> Dr. Solomon (MD, MPH/ RH)</div>
+
+    <div class="controls">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn" id="prev-btn" onclick="prevSlide()">ተመለስ</button>
+        <button class="btn" id="next-btn" onclick="nextSlide()">ቀጣይ</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Amharic Health Content Array
+    const healthSlides = [
+      {
+        badge: "የውሃ ጥቅም",
+        title: "በቂ ውሃ መጠጣት",
+        icon: "💧",
+        text: "በቀን ከ8-10 ብርጭቆ (2 ሊትር) ውሃ መጠጣት ለኩላሊት፣ ለቆዳና ለምግብ ሕዋሳት ጤና እጅግ አስፈላጊ ነው።",
+        color: "#0ea5e9"
+      },
+      {
+        badge: "የእንቅልፍ ጤና",
+        title: "በቂ እንቅልፍ ማግኘት",
+        icon: "😴",
+        text: "በሌሊት ከ7 እስከ 8 ሰዓት መተኛት በሽታ የመከላከል አቅምን ያጠናክራል፤ ጭንቀትንም ይቀንሳል።",
+        color: "#8b5cf6"
+      },
+      {
+        badge: "የአካል ብቃት",
+        title: "የቀን እንቅስቃሴ",
+        icon: "🏃‍♂️",
+        text: "በቀን ለ30 ደቂቃ ያህል በእግር መራመድ የልብ ሕመምና የስኳር በሽታ ተጋላጭነትን በከፍተኛ ሁኔታ ይቀንሳል።",
+        color: "#22c55e"
+      }
+    ];
+
+    let currentIndex = 0;
+    let timer = null;
+    let progressInterval = null;
+    const duration = 5000; // 5 seconds per slide
+    const stepTime = 50;
+
+    const badgeEl = document.getElementById('topic-badge');
+    const titleEl = document.getElementById('main-title');
+    const iconEl = document.getElementById('icon-display');
+    const textEl = document.getElementById('info-text');
+    const progressBar = document.getElementById('progress-bar');
+    const pulseRing = document.querySelector('.pulse-ring');
+
+    function renderSlide(index) {
+      const slide = healthSlides[index];
+      
+      // Update Texts
+      badgeEl.textContent = slide.badge;
+      titleEl.textContent = slide.title;
+      textEl.textContent = slide.text;
+      iconEl.textContent = slide.icon;
+
+      // Update Theme Color dynamically
+      badgeEl.style.borderColor = slide.color;
+      badgeEl.style.color = slide.color;
+      pulseRing.style.borderColor = slide.color;
+
+      // Trigger Animation
+      iconEl.classList.remove('bounce');
+      void iconEl.offsetWidth; // Trigger reflow
+      iconEl.classList.add('bounce');
+
+      resetProgress();
+    }
+
+    function resetProgress() {
+      clearInterval(progressInterval);
+      clearTimeout(timer);
+      
+      let elapsedTime = 0;
+      progressBar.style.width = '0%';
+
+      progressInterval = setInterval(() => {
+        elapsedTime += stepTime;
+        const progressPercentage = (elapsedTime / duration) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+
+        if (elapsedTime >= duration) {
+          clearInterval(progressInterval);
+          nextSlide();
+        }
+      }, stepTime);
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % healthSlides.length;
+      renderSlide(currentIndex);
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + healthSlides.length) % healthSlides.length;
+      renderSlide(currentIndex);
+    }
+
+    // Start Slideshow on load
+    renderSlide(currentIndex);
+  </script>
+</body>
+</html>
