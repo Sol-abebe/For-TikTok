@@ -46,16 +46,37 @@
       color: var(--text);
     }
 
-    /* Top Left Floating Animated Logo */
-    .animated-logo {
+    /* Top Left Floating Animated Logo Container */
+    .animated-logo-container {
       position: absolute;
       top: 15px;
       left: 15px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: logoFloat 3s ease-in-out infinite alternate;
+    }
+
+    /* Image logo styling */
+    .animated-logo-img {
       width: 55px;
       height: auto;
-      z-index: 20;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
-      animation: logoFloat 3s ease-in-out infinite alternate;
+    }
+
+    /* CSS Fallback Medical Icon Badge */
+    .logo-fallback-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
     /* Header Styling */
@@ -240,13 +261,19 @@
 <body>
 
   <div class="tiktok-canvas">
-    <img src="454.png" alt="Logo" class="animated-logo">
-
-    <div class="header">
-      <span class="badge" id="topic-badge">የዕለቱ የጤና መረጃ</span>
-      <h1 class="main-title" id="main-title">ለጤናማ ህይወት 3 አስፈላጊ ነጥቦች</h1>
+    <!-- Top Left Animated Logo with Auto Fallback -->
+    <div class="animated-logo-container">
+      <img src="454.png" alt="Logo" class="animated-logo-img" id="logo-img" onerror="showFallbackLogo()">
+      <div class="logo-fallback-icon" id="logo-fallback" style="display: none;">🩺</div>
     </div>
 
+    <!-- Top Header -->
+    <div class="header">
+      <span class="badge" id="topic-badge">የዕለቱ የጤና መረጃ</span>
+      <h1 class="main-title" id="main-title">ለጤናማ ህይወት አስፈላጊ ነጥቦች</h1>
+    </div>
+
+    <!-- Center Animation Graphic -->
     <div class="visual-container">
       <div class="graphic-box">
         <div class="pulse-ring"></div>
@@ -254,12 +281,15 @@
       </div>
     </div>
 
+    <!-- Bottom Message Box -->
     <div class="info-card">
       <p class="info-text" id="info-text">በቀን ቢያንስ 2 ሊትር ውሃ መጠጣት ሰውነታችንን ያነቃል!</p>
     </div>
 
-    <div class="footnote-author"> Dr. Solomon (MD, MPH/ RH)</div>
+    <!-- Footnote Credentials -->
+    <div class="footnote-author">Dr. Solomon (MD, MPH/ RH)</div>
 
+    <!-- Interactive / Auto Play Controls -->
     <div class="controls">
       <div class="progress-bar-container">
         <div class="progress-bar" id="progress-bar"></div>
@@ -272,7 +302,13 @@
   </div>
 
   <script>
-    // Amharic Health Content Array
+    // Fallback trigger if local 454.png isn't accessible in browser preview
+    function showFallbackLogo() {
+      document.getElementById('logo-img').style.display = 'none';
+      document.getElementById('logo-fallback').style.display = 'flex';
+    }
+
+    // Expanded Amharic Health Content Array
     const healthSlides = [
       {
         badge: "የውሃ ጥቅም",
@@ -294,6 +330,20 @@
         icon: "🏃‍♂️",
         text: "በቀን ለ30 ደቂቃ ያህል በእግር መራመድ የልብ ሕመምና የስኳር በሽታ ተጋላጭነትን በከፍተኛ ሁኔታ ይቀንሳል።",
         color: "#22c55e"
+      },
+      {
+        badge: "የምግብ አመጋገብ",
+        title: "ተመጣጣኝ ምግብ",
+        icon: "🥗",
+        text: "አትክልት፣ ፍራፍሬና ጥራጥሬዎችን አብዝቶ መመገብ የሰውነትን በሽታ የመከላከል አቅም ይገነባል።",
+        color: "#f59e0b"
+      },
+      {
+        badge: "የአእምሮ ጤና",
+        title: "የአእምሮ እረፍት",
+        icon: "🧘‍♂️",
+        text: "ከሥራና ከስክሪን እረፍት መውሰድ የደም ግፊትንና የአእምሮ ውጥረትን ለመቀነስ ይረዳል::",
+        color: "#ec4899"
       }
     ];
 
